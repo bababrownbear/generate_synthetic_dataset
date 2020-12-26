@@ -1,0 +1,2 @@
+Heavily inspired by sklearn's make_classification, this is a more granular widget for generating a dataset.
+https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/_samples_generator.py
