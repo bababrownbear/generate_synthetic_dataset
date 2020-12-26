@@ -2,13 +2,21 @@ name: streamlit
 channels:
   - defaults
 dependencies:
+  - blas=1.0
   - ca-certificates=2020.12.8
   - certifi=2020.12.5
   - iniconfig=1.1.1
+  - intel-openmp=2019.4
   - libedit=3.1.20191231
   - libffi=3.3
+  - mkl=2019.4
+  - mkl-service=2.3.0
+  - mkl_fft=1.2.0
+  - mkl_random=1.1.1
   - more-itertools=8.6.0
   - ncurses=6.2
+  - numpy=1.19.2
+  - numpy-base=1.19.2
   - openssl=1.1.1i
   - pip=20.2.3
   - pluggy=0.13.1
@@ -16,6 +24,7 @@ dependencies:
   - pyparsing=2.4.7
   - pytest=6.2.1
   - python=3.8.5
+  - python-dateutil=2.8.1
   - readline=8.0
   - setuptools=50.3.0
   - six=1.15.0
@@ -80,7 +89,6 @@ dependencies:
     - nbformat==5.0.7
     - nest-asyncio==1.4.1
     - notebook==6.1.4
-    - numpy==1.19.2
     - packaging==20.4
     - pandas==1.1.3
     - pandocfilters==1.4.2
@@ -101,7 +109,6 @@ dependencies:
     - pygments==2.7.1
     - pynisher==0.6.3
     - pyrsistent==0.17.3
-    - python-dateutil==2.8.1
     - pytz==2020.1
     - pyyaml==5.3.1
     - pyzmq==19.0.2
