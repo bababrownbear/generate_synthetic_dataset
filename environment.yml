@@ -1,4 +1,4 @@
-name: streamlit
+name: generate_synthetic_dataset
 channels:
   - defaults
 dependencies:
