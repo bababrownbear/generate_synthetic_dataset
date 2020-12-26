@@ -2,22 +2,30 @@ name: streamlit
 channels:
   - defaults
 dependencies:
-  - ca-certificates=2020.7.22=0
-  - certifi=2020.6.20=py38_0
-  - libcxx=10.0.0=1
-  - libedit=3.1.20191231=h1de35cc_1
-  - libffi=3.3=hb1e8313_2
-  - ncurses=6.2=h0a44026_1
-  - openssl=1.1.1h=haf1e3a3_0
-  - pip=20.2.3=py38_0
-  - python=3.8.5=h26836e1_1
-  - readline=8.0=h1de35cc_0
-  - setuptools=50.3.0=py38h0dc7051_1
-  - sqlite=3.33.0=hffcf06c_0
-  - tk=8.6.10=hb0a8c7a_0
-  - wheel=0.35.1=py_0
-  - xz=5.2.5=h1de35cc_0
-  - zlib=1.2.11=h1de35cc_3
+  - ca-certificates=2020.12.8
+  - certifi=2020.12.5
+  - iniconfig=1.1.1
+  - libcxx=10.0.0
+  - libedit=3.1.20191231
+  - libffi=3.3
+  - more-itertools=8.6.0
+  - ncurses=6.2
+  - openssl=1.1.1i
+  - pip=20.2.3
+  - pluggy=0.13.1
+  - py=1.10.0
+  - pyparsing=2.4.7
+  - pytest=6.2.1
+  - python=3.8.5
+  - readline=8.0
+  - setuptools=50.3.0
+  - six=1.15.0
+  - sqlite=3.33.0
+  - tk=8.6.10
+  - toml=0.10.1
+  - wheel=0.35.1
+  - xz=5.2.5
+  - zlib=1.2.11
   - pip:
     - altair==4.1.0
     - appnope==0.1.0
@@ -93,7 +101,6 @@ dependencies:
     - pydeck==0.5.0b1
     - pygments==2.7.1
     - pynisher==0.6.3
-    - pyparsing==2.4.7
     - pyrsistent==0.17.3
     - python-dateutil==2.8.1
     - pytz==2020.1
@@ -104,7 +111,6 @@ dependencies:
     - scikit-learn==0.22.2.post1
     - scipy==1.5.2
     - send2trash==1.5.0
-    - six==1.15.0
     - sklearn==0.0
     - sortedcontainers==2.3.0
     - streamlit==0.68.0
@@ -112,7 +118,6 @@ dependencies:
     - terminado==0.9.1
     - testpath==0.4.4
     - threadpoolctl==2.1.0
-    - toml==0.10.1
     - toolz==0.11.1
     - tornado==6.0.4
     - traitlets==5.0.4
