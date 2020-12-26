@@ -2,7 +2,7 @@ Heavily inspired by sklearn's make_classification, this is a more granular widge
 
 https://github.com/scikit-learn/scikit-learn/blob/master/sklearn/datasets/_samples_generator.py
 
-1. Using conda install streamlit.yml environment.
+1. Using conda install environment.yml.
 2. run 'streamlit run generate_synthetic_dataset.py
 
 A new window in your browser should pop up, pointed to http://localhost:8501/.
