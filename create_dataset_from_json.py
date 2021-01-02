@@ -1,7 +1,8 @@
 import generate_synthetic_dataset as gsd
 import json
+import sys
 
-with open('dataset_model.json') as f:
+with open(f'{sys.argv[1]}') as f:
   json_from_file = json.load(f)
   data_model = gsd.SyntheticDataModel(**json_from_file)
   dataset = gsd.generate_synthetic_dataset(n_samples=data_model.n_samples, 
@@ -15,4 +16,4 @@ with open('dataset_model.json') as f:
                                  feature_number_range=data_model.feature_number_range,
                                  feature_positive_class_ratio=data_model.feature_positive_class_ratio,
                                  feature_negative_class_ratio=data_model.feature_negative_class_ratio)
-  dataset.to_csv(f"{data_model.dataset_name}.csv")
+  dataset.to_csv(f"{data_model.dataset_name}.csv", index=False)
