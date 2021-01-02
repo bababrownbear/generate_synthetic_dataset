@@ -25,5 +25,6 @@
     ],
     "feature_negative_class_ratio": [
         0.05
-    ]
+    ],
+    "dataset_name": "WhoIsAmazing"
 }

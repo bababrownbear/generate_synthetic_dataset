@@ -10,7 +10,7 @@ from json import JSONEncoder
 
 
 class SyntheticDataModel:
-    def __init__(self, n_samples, n_classes, class_weights, n_features, feature_names, feature_types, feature_number_range, class_names, y_column_name, feature_positive_class_ratio, feature_negative_class_ratio):
+    def __init__(self, n_samples, n_classes, class_weights, n_features, feature_names, feature_types, feature_number_range, class_names, y_column_name, feature_positive_class_ratio, feature_negative_class_ratio, dataset_name):
         self.n_samples=n_samples 
         self.n_classes=n_classes
         self.class_weights=class_weights 
@@ -22,6 +22,7 @@ class SyntheticDataModel:
         self.y_column_name=y_column_name
         self.feature_positive_class_ratio=feature_positive_class_ratio
         self.feature_negative_class_ratio=feature_negative_class_ratio
+        self.dataset_name=dataset_name
 
 class SyntheticDataModelEncoder(JSONEncoder):
         def default(self, o):
@@ -204,8 +205,7 @@ if __name__ == '__main__':
                                  feature_types=feature_types,
                                  feature_number_range=feature_number_range,
                                  feature_positive_class_ratio=feature_positive_class_ratio,
-                                 feature_negative_class_ratio=feature_negative_class_ratio
-                                 )
+                                 feature_negative_class_ratio=feature_negative_class_ratio)
 
     syntheic_data_model_json = json.dumps(synthetic_data_model, indent=4, cls=SyntheticDataModelEncoder)
 
