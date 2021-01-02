@@ -228,7 +228,7 @@ if __name__ == '__main__':
 
     # st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
 
-    TMP_PATH = '/tmp/'
+    TMP_PATH = '../tmp/'
 
     dt = datetime.now()
     ms = str(dt.microsecond)
