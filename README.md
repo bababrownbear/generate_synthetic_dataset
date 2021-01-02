@@ -14,6 +14,6 @@ Original version:
 ![image](https://user-images.githubusercontent.com/29419183/103145338-51074300-46fe-11eb-9409-72e9a9d5a73f.png)
 
 Latest version:
-![image](https://user-images.githubusercontent.com/29419183/103449436-ef028c80-4c6d-11eb-8f0a-ec51420edaf5.png)
+![image](https://user-images.githubusercontent.com/29419183/103450980-d2714f00-4c83-11eb-964c-0f7f776019bb.png)
 
-Build and save your data model as json, to recreate your dataset and use "python create_dataset_from_json.py dataset_model.json"
+Build and save your data model as json, to recreate your dataset and use "python create_dataset_from_json.py dataset_model.json", or check off 'Use JSON' and enter your JSON in the text area.
