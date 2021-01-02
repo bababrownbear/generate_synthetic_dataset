@@ -7,7 +7,8 @@ import base64
 import random
 import json
 from json import JSONEncoder
-
+import pathlib
+from datetime import datetime
 
 class SyntheticDataModel:
     def __init__(self, num_samples, n_classes, class_weights, n_features, feature_names, feature_types, feature_number_range, class_names, y_column_name, feature_positive_class_ratio, feature_negative_class_ratio, dataset_name):
@@ -148,7 +149,7 @@ if __name__ == '__main__':
     dataset_name = st.sidebar.text_input('Enter dataset name', value=dataset_name)
     
     num_samples = data_model.num_samples if useJson else 1000
-    num_samples = st.sidebar.slider(str.format('Number of samples'), 10, 10000, step=10, value=num_samples)
+    num_samples = st.sidebar.slider(str.format('Number of samples'), 10, 1000000, step=10, value=num_samples)
 
     y_column_name = data_model.y_column_name if useJson else 'IsAmazing'
     y_column_name = st.sidebar.text_input('Enter column name for y', value=y_column_name)
@@ -225,7 +226,17 @@ if __name__ == '__main__':
 
     # st.dataframe(dataframe, width=1000, height=1000)
 
-    st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
+    # st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
+
+    STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) / 'static'
+    DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
+    if not DOWNLOADS_PATH.is_dir():
+        DOWNLOADS_PATH.mkdir()
+
+    dt = datetime.now()
+    ms = str(dt.microsecond)
+    st.markdown(f"Download from [downloads/{dataset_name}.csv](downloads/{dataset_name}_{ms}.csv)")
+    dataframe.to_csv(str(DOWNLOADS_PATH / f"{dataset_name}_{ms}.csv"), index=False)
 
     synthetic_data_model = SyntheticDataModel(num_samples=num_samples, 
                                  n_classes=2, 
