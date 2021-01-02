@@ -52,7 +52,7 @@ def generate_synthetic_dataset(n_samples=100,
         raise ValueError("n_features cannot be None")
     if n_features < 1:
         raise ValueError("n_features should be greater than or equal to 1")
-    if np.sum(class_weights) != 1.0:
+    if round(np.sum(class_weights)) != 1.0:
         raise ValueError("class_weights must add up to 1.0")
     if feature_names is None:
         raise ValueError("feature_names cannot be None")
