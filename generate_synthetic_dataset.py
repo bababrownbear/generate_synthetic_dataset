@@ -229,14 +229,11 @@ if __name__ == '__main__':
     # st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
 
     STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) / 'static'
-    DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "tmp")
-    if not DOWNLOADS_PATH.is_dir():
-        DOWNLOADS_PATH.mkdir()
 
     dt = datetime.now()
     ms = str(dt.microsecond)
     st.markdown(f"Download from [tmp/{dataset_name}.csv](tmp/{dataset_name}_{ms}.csv)")
-    dataframe.to_csv(str(DOWNLOADS_PATH / f"{dataset_name}_{ms}.csv"), index=False)
+    dataframe.to_csv(str(STREAMLIT_STATIC_PATH / f"{dataset_name}_{ms}.csv"), index=False)
 
     synthetic_data_model = SyntheticDataModel(num_samples=num_samples, 
                                  n_classes=2, 
