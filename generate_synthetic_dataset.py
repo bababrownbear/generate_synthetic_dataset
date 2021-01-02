@@ -205,7 +205,8 @@ if __name__ == '__main__':
                                  feature_types=feature_types,
                                  feature_number_range=feature_number_range,
                                  feature_positive_class_ratio=feature_positive_class_ratio,
-                                 feature_negative_class_ratio=feature_negative_class_ratio)
+                                 feature_negative_class_ratio=feature_negative_class_ratio,
+                                 dataset_name=dataset_name)
 
     syntheic_data_model_json = json.dumps(synthetic_data_model, indent=4, cls=SyntheticDataModelEncoder)
 
