@@ -226,12 +226,7 @@ if __name__ == '__main__':
 
     # st.dataframe(dataframe, width=1000, height=1000)
 
-    # st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
-
-    dt = datetime.now()
-    ms = str(dt.microsecond)
-    st.markdown(f"Download [{dataset_name}.csv](tmp/{dataset_name}_{ms}.csv)")
-    dataframe.to_csv(f"{dataset_name}_{ms}.csv", index=False)
+    st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
 
     synthetic_data_model = SyntheticDataModel(num_samples=num_samples, 
                                  n_classes=2, 
