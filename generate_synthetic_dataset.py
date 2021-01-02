@@ -10,8 +10,8 @@ from json import JSONEncoder
 
 
 class SyntheticDataModel:
-    def __init__(self, n_samples, n_classes, class_weights, n_features, feature_names, feature_types, feature_number_range, class_names, y_column_name, feature_positive_class_ratio, feature_negative_class_ratio, dataset_name):
-        self.n_samples=n_samples 
+    def __init__(self, num_samples, n_classes, class_weights, n_features, feature_names, feature_types, feature_number_range, class_names, y_column_name, feature_positive_class_ratio, feature_negative_class_ratio, dataset_name):
+        self.num_samples=num_samples 
         self.n_classes=n_classes
         self.class_weights=class_weights 
         self.n_features=n_features
@@ -28,7 +28,7 @@ class SyntheticDataModelEncoder(JSONEncoder):
         def default(self, o):
             return o.__dict__
 
-def generate_synthetic_dataset(n_samples=100, 
+def generate_synthetic_dataset(num_samples=100, 
                     n_classes=2, 
                     class_weights=[0.5, 0.5], 
                     n_features=2, 
@@ -40,10 +40,10 @@ def generate_synthetic_dataset(n_samples=100,
                     feature_positive_class_ratio=[0.7,0.8],
                     feature_negative_class_ratio=[0.1,0.1]):
 
-    if n_samples is None:
-        raise ValueError("n_samples cannot be None")
-    if n_samples < 10:
-        raise ValueError("n_samples should be greater than 10")
+    if num_samples is None:
+        raise ValueError("num_samples cannot be None")
+    if num_samples < 10:
+        raise ValueError("num_samples should be greater than 10")
     if n_classes is None:
         raise ValueError("n_classes cannot be None")
     if n_classes < 2:
@@ -74,39 +74,39 @@ def generate_synthetic_dataset(n_samples=100,
         raise ValueError('feature_class_ratio cannot be greater than 1.0')
 
 
-    X = np.zeros(shape=(n_samples, n_features))
+    X = np.zeros(shape=(num_samples, n_features))
     X = pd.DataFrame(data=X, columns=feature_names)
 
-    y = np.zeros((n_samples, 1))
+    y = np.zeros((num_samples, 1))
     y = pd.DataFrame(data=y, columns=[y_column_name])
 
     start = 0
     stop = 0
     for i in range(n_classes):
-        n_samples_for_class = int(n_samples * class_weights[i])
-        stop = stop + n_samples_for_class
+        num_samples_for_class = int(num_samples * class_weights[i])
+        stop = stop + num_samples_for_class
         y[start:stop] = class_names[i] 
         start = stop
 
     for ndx, col in enumerate(X.columns,0):
         col_positive_weight = feature_positive_class_ratio[ndx]
         col_negative_weight = feature_negative_class_ratio[ndx]
-        n_samples_for_positive_class = int(n_samples * class_weights[0])
-        num_positive_towards_positive_class = int(n_samples_for_positive_class * col_positive_weight)
-        num_positive_towards_negative_class = int(n_samples_for_positive_class * col_negative_weight)
+        num_samples_for_positive_class = int(num_samples * class_weights[0])
+        num_positive_towards_positive_class = int(num_samples_for_positive_class * col_positive_weight)
+        num_positive_towards_negative_class = int(num_samples_for_positive_class * col_negative_weight)
         if feature_types[ndx] == "Boolean":
             X[X.columns[ndx]][0:num_positive_towards_positive_class] = True
-            X[X.columns[ndx]][num_positive_towards_positive_class:n_samples_for_positive_class] = False
+            X[X.columns[ndx]][num_positive_towards_positive_class:num_samples_for_positive_class] = False
 
-            X[X.columns[ndx]][n_samples_for_positive_class:n_samples_for_positive_class+num_positive_towards_negative_class] = True
-            X[X.columns[ndx]][n_samples_for_positive_class+num_positive_towards_negative_class:] = False
+            X[X.columns[ndx]][num_samples_for_positive_class:num_samples_for_positive_class+num_positive_towards_negative_class] = True
+            X[X.columns[ndx]][num_samples_for_positive_class+num_positive_towards_negative_class:] = False
         elif feature_types[ndx] == 'Number':
             min_number_range_positive_class,max_number_range_positive_class,min_number_range_negative_class,max_number_range_negative_class = feature_number_range[ndx]
             X[X.columns[ndx]][0:num_positive_towards_positive_class] = [random.randint(min_number_range_positive_class,max_number_range_positive_class) for _ in range(num_positive_towards_positive_class)]
-            X[X.columns[ndx]][num_positive_towards_positive_class:n_samples_for_positive_class] = [random.randint(min_number_range_negative_class,max_number_range_negative_class) for _ in range(n_samples_for_positive_class-num_positive_towards_positive_class)]
+            X[X.columns[ndx]][num_positive_towards_positive_class:num_samples_for_positive_class] = [random.randint(min_number_range_negative_class,max_number_range_negative_class) for _ in range(num_samples_for_positive_class-num_positive_towards_positive_class)]
 
-            X[X.columns[ndx]][n_samples_for_positive_class:n_samples_for_positive_class+num_positive_towards_negative_class] = [random.randint(min_number_range_positive_class,max_number_range_positive_class) for _ in range(num_positive_towards_negative_class)]
-            X[X.columns[ndx]][n_samples_for_positive_class+num_positive_towards_negative_class:] = [random.randint(min_number_range_negative_class,max_number_range_negative_class) for _ in range(n_samples-n_samples_for_positive_class-num_positive_towards_negative_class)]
+            X[X.columns[ndx]][num_samples_for_positive_class:num_samples_for_positive_class+num_positive_towards_negative_class] = [random.randint(min_number_range_positive_class,max_number_range_positive_class) for _ in range(num_positive_towards_negative_class)]
+            X[X.columns[ndx]][num_samples_for_positive_class+num_positive_towards_negative_class:] = [random.randint(min_number_range_negative_class,max_number_range_negative_class) for _ in range(num_samples-num_samples_for_positive_class-num_positive_towards_negative_class)]
 
     dataset = pd.DataFrame(data=pd.concat([X, y], axis=1))
 
@@ -134,25 +134,42 @@ def get_dataset_model_link(data_model_as_json):
     return f'<a href="data:file/json;base64,{b64}" download="dataset_model.json">[Download dataset model as JSON]</a>'
 
 if __name__ == '__main__':
-    dataset_name = st.sidebar.text_input('Enter dataset name', value='WhoIsAmazing')
+
+    useJson = st.sidebar.checkbox("Use JSON", value=False)
+
+    if useJson:
+        with open('dataset_model.json') as f:
+            json_from_file = json.load(f)
+            json_input = st.sidebar.text_area("JSON Input", value=json.dumps(json_from_file))
+            json_from_input = json.loads(json_input)
+            data_model = SyntheticDataModel(**json_from_input)
+
+    dataset_name = data_model.dataset_name if useJson else 'WhoIsAmazing'
+    dataset_name = st.sidebar.text_input('Enter dataset name', value=dataset_name)
     
-    n_samples = st.sidebar.slider(str.format('Number of samples'), 10, 10000, step=10, value=1000)
+    num_samples = data_model.num_samples if useJson else 1000
+    num_samples = st.sidebar.slider(str.format('Number of samples'), 10, 10000, step=10, value=num_samples)
 
-    y_column_name = st.sidebar.text_input('Enter column name for y', value='IsAmazing')
+    y_column_name = data_model.y_column_name if useJson else 'IsAmazing'
+    y_column_name = st.sidebar.text_input('Enter column name for y', value=y_column_name)
 
-    n_classes = 2
+    n_classes = data_model.n_classes if useJson else 2
 
     class_names = []
 
-    class_name = st.sidebar.text_input("Enter name for the positive class",value="True")
+    positive_name = data_model.class_names[0] if useJson else 'True'
+    class_name = st.sidebar.text_input("Enter name for the positive class",value=positive_name)
     class_names.append(class_name)
 
-    class_name = st.sidebar.text_input("Enter name for the negative class",value="False")
+    negative_name = data_model.class_names[1] if useJson else 'False'
+    class_name = st.sidebar.text_input("Enter name for the negative class",value=negative_name)
     class_names.append(class_name)
 
-    class_weight = st.sidebar.slider('Ratio of positive to negative classes', 0.0, 1.0, step=0.01, value=0.5)
+    class_weight = data_model.class_weights[0] if useJson else 0.5
+    class_weight = st.sidebar.slider('Ratio of positive to negative classes', 0.0, 1.0, step=0.01, value=class_weight)
     
-    n_features = st.sidebar.slider('Number of features', 1, 100, step=1)
+    n_features = data_model.n_features if useJson else 1
+    n_features = st.sidebar.slider('Number of features', 1, 25, step=1, value=n_features)
 
     feature_names = []
     feature_types = []
@@ -161,24 +178,39 @@ if __name__ == '__main__':
     feature_negative_class_ratio = []
     for feature_ndx in range(n_features):
         st.sidebar.text("Feature #{feature_ndx}".format(feature_ndx=feature_ndx+1))
-        feature_name = st.sidebar.text_input("Enter feature name for feature #{feature_ndx}".format(feature_ndx=feature_ndx+1), value="EatsVeggies")
+        
+        if useJson:
+            useJson = (feature_ndx < len(data_model.feature_names)) & useJson
+        
+        feature_name = data_model.feature_names[feature_ndx] if useJson else "EatsVeggies"
+        feature_name = st.sidebar.text_input("Enter feature name for feature #{feature_ndx}".format(feature_ndx=feature_ndx+1), value=feature_name)
         feature_names.append(feature_name)
-        feature_type = st.sidebar.selectbox("Select type for feature #{feature_ndx}".format(feature_ndx=feature_ndx+1), options=['Boolean', 'Number'], index=0)
+
+        feature_type = ['Boolean','Number'].index(data_model.feature_types[feature_ndx]) if useJson else 0
+        feature_type = st.sidebar.selectbox("Select type for feature #{feature_ndx}".format(feature_ndx=feature_ndx+1), options=['Boolean', 'Number'], index=feature_type)
+
         if feature_type == 'Number':
-            min_number_range_positive_class = st.sidebar.number_input("Enter min number range for positive class:",value=0)
-            max_number_range_positive_class = st.sidebar.number_input("Enter max number range for positive class:",value=0)
-            min_number_range_negative_class = st.sidebar.number_input("Enter min number range for negative class:",value=0)
-            max_number_range_negative_class = st.sidebar.number_input("Enter max number range for negative class:",value=0)
+            min_number_range_positive_class,max_number_range_positive_class,min_number_range_negative_class,max_number_range_negative_class = data_model.feature_number_range[feature_ndx] if useJson else [0,0,0,0]
+            min_number_range_positive_class = st.sidebar.number_input("Enter min number range for positive class:",value=min_number_range_positive_class)
+            max_number_range_positive_class = st.sidebar.number_input("Enter max number range for positive class:",value=max_number_range_positive_class)
+            min_number_range_negative_class = st.sidebar.number_input("Enter min number range for negative class:",value=min_number_range_negative_class)
+            max_number_range_negative_class = st.sidebar.number_input("Enter max number range for negative class:",value=max_number_range_negative_class)
+
             feature_number_range.append([min_number_range_positive_class,max_number_range_positive_class,min_number_range_negative_class,max_number_range_negative_class])
         else:
-            feature_number_range .append([])
+            feature_number_range.append([])
+
         feature_types.append(feature_type)
-        feature_class_ratio = st.sidebar.slider("Enter positive ratio for feature #{feature_ndx} vs positive class".format(feature_ndx=feature_ndx+1), 0.0, 1.0, step=0.01, value=0.85)
+
+        feature_class_ratio = data_model.feature_positive_class_ratio[feature_ndx] if useJson else 0.85
+        feature_class_ratio = st.sidebar.slider("Enter positive ratio for feature #{feature_ndx} vs positive class".format(feature_ndx=feature_ndx+1), 0.0, 1.0, step=0.01, value=feature_class_ratio) 
         feature_positive_class_ratio.append(feature_class_ratio)
-        feature_class_ratio = st.sidebar.slider("Enter positive ratio for feature #{feature_ndx} vs negative class".format(feature_ndx=feature_ndx+1), 0.0, 1.0, step=0.01, value=0.05)
+
+        feature_class_ratio = data_model.feature_negative_class_ratio[feature_ndx] if useJson else 0.05
+        feature_class_ratio = st.sidebar.slider("Enter positive ratio for feature #{feature_ndx} vs negative class".format(feature_ndx=feature_ndx+1), 0.0, 1.0, step=0.01, value=feature_class_ratio)
         feature_negative_class_ratio.append(feature_class_ratio)
 
-    dataframe = generate_synthetic_dataset(n_samples=n_samples, 
+    dataframe = generate_synthetic_dataset(num_samples=num_samples, 
                                  n_classes=2, 
                                  class_weights=[class_weight, round(1.0-class_weight,1)], 
                                  class_names=class_names,
@@ -195,7 +227,7 @@ if __name__ == '__main__':
 
     st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
 
-    synthetic_data_model = SyntheticDataModel(n_samples=n_samples, 
+    synthetic_data_model = SyntheticDataModel(num_samples=num_samples, 
                                  n_classes=2, 
                                  class_weights=[class_weight, round(1.0-class_weight,1)], 
                                  class_names=class_names,

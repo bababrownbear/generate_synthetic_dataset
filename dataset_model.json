@@ -1,19 +1,30 @@
 {
-    "n_samples": 1000,
+    "num_samples": 1000,
     "n_classes": 2,
     "class_weights": [
         0.5,
         0.5
     ],
-    "n_features": 1,
+    "n_features": 3,
     "feature_names": [
-        "EatsVeggies"
+        "EatsVeggies",
+        "BrushesTeeth",
+        "MathTestScore"
     ],
     "feature_types": [
-        "Boolean"
+        "Boolean",
+        "Boolean",
+        "Number"
     ],
     "feature_number_range": [
-        []
+        [],
+        [],
+        [
+            80,
+            105,
+            25,
+            75
+        ]
     ],
     "class_names": [
         "True",
@@ -21,10 +32,14 @@
     ],
     "y_column_name": "IsAmazing",
     "feature_positive_class_ratio": [
-        0.85
+        0.85,
+        0.86,
+        0.87
     ],
     "feature_negative_class_ratio": [
-        0.05
+        0.05,
+        0.06,
+        0.07
     ],
     "dataset_name": "WhoIsAmazing"
 }
