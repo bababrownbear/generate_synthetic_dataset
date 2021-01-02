@@ -121,7 +121,7 @@ def get_table_download_link(df,datasetname):
     b64 = base64.b64encode(
         csv.encode()
     ).decode()  # some strings <-> bytes conversions necessary here
-    return f'<a href="data:file/csv;base64,{b64}" download="{datasetname}.csv">Download dataset as CSV file</a>'
+    return f'<a href="data:file/csv;base64,{b64}" download="{datasetname}.csv">[Download dataset as CSV]</a>'
 
 def get_dataset_model_link(data_model_as_json):
     """Generates a link allowing the data in a given panda dataframe to be downloaded
@@ -131,7 +131,7 @@ def get_dataset_model_link(data_model_as_json):
     b64 = base64.b64encode(
         data_model_as_json.encode()
     ).decode()  # some strings <-> bytes conversions necessary here
-    return f'<a href="data:file/json;base64,{b64}" download="dataset_model.json">Download dataset model as json file</a>'
+    return f'<a href="data:file/json;base64,{b64}" download="dataset_model.json">[Download dataset model as JSON]</a>'
 
 if __name__ == '__main__':
     dataset_name = st.sidebar.text_input('Enter dataset name', value='WhoIsAmazing')
