@@ -5,6 +5,27 @@ import numpy as np
 import streamlit as st
 import base64
 import random
+import json
+from json import JSONEncoder
+
+
+class SyntheticDataModel:
+    def __init__(self, n_samples, n_classes, class_weights, n_features, feature_names, feature_types, feature_number_range, class_names, y_column_name, feature_positive_class_ratio, feature_negative_class_ratio):
+        self.n_samples=n_samples 
+        self.n_classes=n_classes
+        self.class_weights=class_weights 
+        self.n_features=n_features
+        self.feature_names=feature_names
+        self.feature_types=feature_types
+        self.feature_number_range=feature_number_range
+        self.class_names=class_names
+        self.y_column_name=y_column_name
+        self.feature_positive_class_ratio=feature_positive_class_ratio
+        self.feature_negative_class_ratio=feature_negative_class_ratio
+
+class SyntheticDataModelEncoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__
 
 def generate_synthetic_dataset(n_samples=100, 
                     n_classes=2, 
@@ -101,12 +122,22 @@ def get_table_download_link(df,datasetname):
     ).decode()  # some strings <-> bytes conversions necessary here
     return f'<a href="data:file/csv;base64,{b64}" download="{datasetname}.csv">Download dataset as CSV file</a>'
 
+def get_dataset_model_link(data_model_as_json):
+    """Generates a link allowing the data in a given panda dataframe to be downloaded
+    in:  dataframe
+    out: href string
+    """
+    b64 = base64.b64encode(
+        data_model_as_json.encode()
+    ).decode()  # some strings <-> bytes conversions necessary here
+    return f'<a href="data:file/json;base64,{b64}" download="dataset_model.json">Download dataset model as json file</a>'
+
 if __name__ == '__main__':
     dataset_name = st.sidebar.text_input('Enter dataset name', value='WhoIsAmazing')
     
-    n_samples = st.sidebar.slider(str.format('Number of samples'), 10, 10000, step=1000)
+    n_samples = st.sidebar.slider(str.format('Number of samples'), 10, 10000, step=10, value=1000)
 
-    st.sidebar.text_input('Enter column name for y', value='IsAmazing')
+    y_column_name = st.sidebar.text_input('Enter column name for y', value='IsAmazing')
 
     n_classes = 2
 
@@ -150,6 +181,7 @@ if __name__ == '__main__':
                                  n_classes=2, 
                                  class_weights=[class_weight, round(1.0-class_weight,1)], 
                                  class_names=class_names,
+                                 y_column_name=y_column_name,
                                  n_features=n_features, 
                                  feature_names=feature_names,
                                  feature_types=feature_types,
@@ -158,9 +190,26 @@ if __name__ == '__main__':
                                  feature_negative_class_ratio=feature_negative_class_ratio
                                  )
 
-    dataframe = generate_synthetic_dataset()
-
-    st.dataframe(dataframe, width=1000, height=1000)
+    # st.dataframe(dataframe, width=1000, height=1000)
 
     st.markdown(get_table_download_link(dataframe, dataset_name), unsafe_allow_html=True)
+
+    synthetic_data_model = SyntheticDataModel(n_samples=n_samples, 
+                                 n_classes=2, 
+                                 class_weights=[class_weight, round(1.0-class_weight,1)], 
+                                 class_names=class_names,
+                                 y_column_name=y_column_name,
+                                 n_features=n_features, 
+                                 feature_names=feature_names,
+                                 feature_types=feature_types,
+                                 feature_number_range=feature_number_range,
+                                 feature_positive_class_ratio=feature_positive_class_ratio,
+                                 feature_negative_class_ratio=feature_negative_class_ratio
+                                 )
+
+    syntheic_data_model_json = json.dumps(synthetic_data_model, indent=4, cls=SyntheticDataModelEncoder)
+
+    st.markdown(get_dataset_model_link(syntheic_data_model_json), unsafe_allow_html=True)
+
+    st.text(syntheic_data_model_json)
 
